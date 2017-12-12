@@ -1,0 +1,46 @@
+.costomerList{
+    margin-bottom: 70px;
+    height: 100%;
+    .weui-cells {
+        margin-top: 15px;
+    }
+    
+    .greenColor {
+        color: #1aad19;
+    }
+    
+    .graycolor {
+        color: #999999;
+    }
+    
+    .redColor {
+        color: #E64340;
+    }
+    .title{
+        padding: 15px 15px 0;
+        font-size: 18px;
+        position: relative;
+    }
+    .mr6{
+        margin-right: 6px;
+    }
+    .right15{
+        position: absolute;
+        right: 15px;
+    }
+    .fz22{
+        font-size: 22px;
+    }
+    .mr10{
+        margin-right: 10px;
+    }
+    .bottom-button{
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        margin: 0;
+        padding: 10px;
+        text-align: center;
+    }
+}

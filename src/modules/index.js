@@ -1,0 +1,9 @@
+export { default as Login } from './login/login';
+export { default as Register } from './register/register';
+export { default as Menu } from './menu/menu';
+export { default as CustomerList } from './customerList/customerList';
+export { default as CustomerDetail } from './customerDetail/customerDetail';
+export { default as AddCustomer } from './addCustomer/addCustomer';
+export { default as Management } from './management/management';
+export { default as ManageDetail } from './manageDetail/manageDetail';
+export { default as CustomerSearch } from './customerSearch/customerSearch';

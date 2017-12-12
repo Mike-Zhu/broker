@@ -1,0 +1,40 @@
+.management{
+    margin-bottom: 70px;
+    .weui-cells {
+        margin-top: 15px;
+    }
+
+    .greenColor {
+        color: #1aad19;
+    }
+
+    .graycolor {
+        color: #999999;
+    }
+
+    .redColor {
+        color: #E64340;
+    }
+
+    .weui-cell__bd-title, .weui-cell__ft {
+        font-size: 17px !important;
+    }
+
+    .weui-cell__bd {
+        font-size: 22px
+    }
+    
+    .header{
+        padding: 15px 15px 0;
+        font-size: 18px;
+    }
+    .mr6{
+        margin-right: 6px;
+    }
+    .bbgrey{
+        border-bottom: 1px solid rgba(229, 229, 229, 0.52);
+    }
+    .fz14{
+        font-size: 14px;
+    }
+}

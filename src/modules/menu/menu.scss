@@ -1,0 +1,124 @@
+.menu{
+    .weui-cells {
+        margin-top: 0px;
+    }
+
+    .weui-grid {
+        padding: 30px 10px 50px;
+        width: 50%;
+        background: #ffffff;
+    }
+
+    .weui-grid__icon {
+        width: 60px;
+        height: 60px;
+    }
+
+    .weui-grid__icon img {
+        width: 60px;
+        height: 60px;
+    }
+
+    .weui-grid__label {
+        font-size: 18px;
+    }
+
+    div.page__ft.j_bottom {
+        z-index: 1000;
+    }
+
+
+
+    .weui-grid__label {
+        margin-top: 20px !important;
+
+    }
+    .graycolor{
+        color:#999999;
+    }
+    .padding015{
+        padding: 0px 15px;
+    }
+    .iconJr{
+        width: 35px;
+        display: block;
+        color: #c9c9c9;
+        font-size: 30px;
+        &.new{
+            color: #c9c9c9;
+        }
+        &.pro{
+            color: #77d1d9;
+        }   
+        &.senior{
+            // color: #77d1d9;
+        }
+    }
+    .title{
+        .smallp{
+            font-size: 13px;
+            color: #888888;
+            margin-left: 5px;
+            line-height: 35px;
+            margin-right: 60px;
+        }
+        .quit{
+            flex:1;
+            flex-direction: row;
+            justify-content:flex-end;
+            display: flex;
+            span{
+                line-height: 35px;
+                color:#999
+            }
+            i{
+                color:#999;
+                padding-right: 5px;
+            }
+        }
+    }
+
+    .details{
+        text-align: center;
+        background: #f8f8f8;
+        border-top: 1px solid #f8f8f8;
+        padding: 35px 10px;
+        .fz14{
+            font-size: 14px;
+            color: #888888;
+        }
+        .number{
+            font-size: 38px;
+            color:#1AAD19;
+        }
+        .explain{
+            font-size: 16px;
+            .greenColor{
+                color:rgba(26, 173, 25, 0.59);
+            }
+        }
+    }
+    .mr10{
+        position: relative;
+        margin-right: 10px;
+    }
+    .broker{
+        font-size: 13px;
+        color: #888888;
+    }
+    .mt25{
+        margin-top: 25px;
+        .iconfont {
+            font-size: 60px;
+        }
+    }
+    .colorBlue{
+        color: rgba(42, 179, 250, 0.74)
+    }
+    .colorRed{
+        color: rgba(250, 86, 99, 0.69)
+    }
+    .colorGreen{
+        color: rgba(26, 173, 25, 0.67)
+    }
+}
