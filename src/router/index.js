@@ -7,8 +7,6 @@ import {
 } from 'react-router-dom'
 import Launch from '../modules/launch/launch'
 import Login from '../modules/login/login'
-import createHistory from 'history/createHashHistory'
-import { checkPathname, checkToken } from './routerData'
 import asyncComponent from '../components/AsyncComponent'
 import { Provider } from 'react-redux';
 import store from '../store/store'
@@ -69,13 +67,6 @@ const RouterIndex = () => {
   )
 }
 export default RouterIndex;
-export const history = createHistory();
 
-history.listen(location => {
-  const { pathname } = location;
-  if (!checkToken() && checkPathname.indexOf(pathname) >= 0) {
-    history.replace('login')
-  }
-})
 
 

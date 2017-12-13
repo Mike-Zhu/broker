@@ -28,15 +28,6 @@ const menus = [
     // }
 ]
 class Menu extends Component {
-    constructor() {
-        super();
-        this.state = {}
-    }
-
-    componentDidMount() {
-
-    }
-
     _menuPushState(type) {
         switch (type) {
             case "customerList":
@@ -99,7 +90,7 @@ class Menu extends Component {
                         <div className="weui-cell__bd">
                             <span >总转化 / 推荐</span>
                         </div>
-                        <div className="weui-cell__ft">{this.props.unConversion} / {this.state.conversion}</div>
+                        <div className="weui-cell__ft">{this.props.unConversion} / {this.props.conversion}</div>
                     </a>
                     <a href={`tel:${this.props.mobilePhone}`} className="weui-cell  weui-cell_access">
                         <div className="weui-cell__bd">

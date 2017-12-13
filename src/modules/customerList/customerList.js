@@ -1,48 +1,16 @@
 import React, { Component } from 'react'
 import './list.scss'
 import Footer from '../../layout/footer'
-import { customerType, getCustomer } from './customerData'
-import JRfunction from '../../services/JRfunction'
-
-export default class CustomerList extends Component {
-    constructor() {
-        super();
-        this.state = {
-            customeArray: []
-        }
-        this.initData = {
-            page: 1,
-            limit: 10
-        }
-    }
-
-    async componentDidMount() {
-        const global = JSON.parse(localStorage.getItem('globalData'));
-        const { conversion, unConversion } = global;
-
-        const { search } = this.props.history.location;
-        const searchData = JRfunction.getUrlQuery(search);
-        const customeArray = await this._getCustomer(searchData);
-        this.setState({
-            conversion,
-            customeArray,
-            unConversion
+import { customerType } from './customerData'
+import { connect } from 'react-redux'
+class CustomerList extends Component {
+    state = {}
+    componentDidMount() {
+        const { initData, dispatch } = this.props;
+        dispatch({
+            type: 'load_customerList',
+            payload: initData
         })
-        // const id = this.props.params
-        // console.log(this.props)
-    }
-
-    async _getCustomer(search) {
-        const { customerName, endTime, startTime, productName } = search;
-        const { page, limit } = this.initData;
-        const customerList = await getCustomer({ 
-            page, limit,//基础条件
-            customerName,
-            endTime,
-            startTime, 
-            productName,//查询条件
-         });
-        return this.state.customeArray.concat(customerList.data);
     }
 
     _initCusTitle() {
@@ -58,7 +26,9 @@ export default class CustomerList extends Component {
                     <div className="weui-cell__bd">
                         <span>总转化 / 推荐</span>
                     </div>
-                    <div className="weui-cell__ft">{this.state.unConversion} / {this.state.conversion}</div>
+                    <div className="weui-cell__ft">
+                        {this.props.globalData.unConversion} / {this.props.globalData.conversion}
+                        </div>
                 </div>
             </div>
         )
@@ -72,7 +42,7 @@ export default class CustomerList extends Component {
         sessionStorage.setItem(key, JSONdata)
         history.push({
             pathname: `/customerDetail/${id}`,
-            search: JRfunction.setQuery({ type }),
+            // search: JRfunction.setQuery({ type }),
         })
         //    to={"?type="}
     }
@@ -118,15 +88,18 @@ export default class CustomerList extends Component {
                 </div>
                 <div>
                     {this._initCusTitle()}
-                    {this._renderCustomer(this.state.customeArray)}
+                    {this._renderCustomer(this.props.customearray)}
                     <Footer />
                 </div>
-                {/* <div className="weui-btn-area bottom-button">
-                    <Link to="/addCustomer" className="weui-btn weui-btn_primary">
-                        新增客户
-                    </Link>
-                </div> */}
             </div>
         )
     }
 }
+const mapStateToProps = ({ initData, customearray, globalData }) => {
+    return {
+        initData,
+        customearray,
+        globalData
+    }
+}
+export default connect(mapStateToProps)(CustomerList);

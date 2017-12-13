@@ -1,4 +1,3 @@
-import Http from "../../services/http";
 
 export const customerType = {
     "未转化": {
@@ -18,18 +17,3 @@ export const customerType = {
     },
 }
 
-export function getCustomer({ page, limit, customerName, startTime, endTime,productName }) {
-    const start = (page - 1) * limit;
-    const url = 'wechat/broker/customer'
-    const openId = localStorage.getItem('openId')
-    const params = {
-        start,
-        limit,
-        openId,
-        customerName,
-        startTime,
-        endTime,
-        productName
-    }
-    return Http.get(url, params, 'customer')
-}
