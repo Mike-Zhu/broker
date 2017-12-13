@@ -6,6 +6,7 @@ import {
 } from 'react-router-dom'
 import { bindInfo } from './login.controller'
 import Alert from '../../services/alert'
+import { action } from '../../store/store'
 
 export default class Login extends Component {
     constructor() {
@@ -32,24 +33,31 @@ export default class Login extends Component {
             Alert.alert('请输入密码');
             return;
         };
-        const reponse = await bindInfo({ name, pwd });
-        if (reponse.type && reponse.type === 'wechat/access') {
-            if(reponse.data.response && reponse.data.response.data){
-                Alert.alert(reponse.data.response.data);
-            }else{
-                Alert.alert("登录错误，请重试");
+        action({
+            type:"Broker_login",
+            payload:{
+                name,
+                pwd
             }
-            return;
-        }
-        // const { data } = reponse;
-        // console.log(data)
-        if (reponse && reponse.token) {
-            localStorage.setItem('globalData', JSON.stringify(reponse))
-            localStorage.setItem('token', reponse.token)
-            localStorage.setItem('tokenTime', new Date().getTime())
-        }
-        //存储
-        history.replace('menu')
+        })
+        // const reponse = await bindInfo({ name, pwd });
+        // if (reponse.type && reponse.type === 'wechat/access') {
+        //     if(reponse.data.response && reponse.data.response.data){
+        //         Alert.alert(reponse.data.response.data);
+        //     }else{
+        //         Alert.alert("登录错误，请重试");
+        //     }
+        //     return;
+        // }
+        // // const { data } = reponse;
+        // // console.log(data)
+        // if (reponse && reponse.token) {
+        //     localStorage.setItem('globalData', JSON.stringify(reponse))
+        //     localStorage.setItem('token', reponse.token)
+        //     localStorage.setItem('tokenTime', new Date().getTime())
+        // }
+        // //存储
+        // history.replace('menu')
     }
 
     render() {

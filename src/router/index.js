@@ -5,12 +5,13 @@ import {
   Redirect,
   Switch
 } from 'react-router-dom'
-
 import Launch from '../modules/launch/launch'
 import Login from '../modules/login/login'
 import createHistory from 'history/createHashHistory'
 import { checkPathname, checkToken } from './routerData'
 import asyncComponent from '../components/AsyncComponent'
+import { Provider, connect } from 'react-redux';
+import store from '../store/store'
 
 const routerObject = [
   {
@@ -54,22 +55,23 @@ const routerObject = [
     component: asyncComponent(() => import('../modules/customerSearch/customerSearch'))
   }
 ]
-export default class RouterIndex extends Component {
-  render() {
-    return (
+const RouterIndex = () => {
+  return (
+    <Provider store={store}>
       <HashRouter >
         <Switch>
           {routerObject.map(result => (
-            <Route exact key={result.key} path={result.path} component={result.component} />
+            <Route exact key={result.path} path={result.path} component={result.component} />
           ))}
           <Redirect to="/menu" />
         </Switch>
       </HashRouter >
-    )
-  }
+    </Provider>
+  )
 }
 
-const history = createHistory();
+export default RouterIndex
+export const history = createHistory();
 
 history.listen(location => {
   const { pathname } = location;

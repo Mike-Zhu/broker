@@ -3,10 +3,10 @@ import axios from 'axios'
 
 //测试地址
 const host = {
-    initHost : "http://uat.jrerdangjia.com/",
-    access:"https://uat.jrerdangjia.com:9672/",
-    customer:"https://uat.jrerdangjia.com:9672/",
-    imgload:"https://uat.jrerdangjia.com:9862/"
+    initHost: "http://uat.jrerdangjia.com/",
+    access: "https://uat.jrerdangjia.com:9672/",
+    customer: "https://uat.jrerdangjia.com:9672/",
+    imgload: "https://uat.jrerdangjia.com:9862/"
 }
 //正式地址
 // const host = "http://uat.jrerdangjia.com";
@@ -30,13 +30,13 @@ export default class Http {
                 'Content-Type': "application/json"
             },
         })
-        .then(res => res.data)
-        .catch((error) => {
-            return {
-                type:url,
-                data:error
-            }
-        })
+            .then(res => res.data)
+            .catch((error) => {
+                return {
+                    type: "fail",
+                    data: error && error.response && error.response.data ? error.response.data : ""
+                }
+            })
     }
 
     static post(url, params, type = "initHost") {
@@ -48,14 +48,13 @@ export default class Http {
             data: params,
             headers: { 'Authorization': `${token}` },
         })
-        .then(res => res.data)
-        .catch((error) => {
-            console.log(error)
-            return {
-                type: url,
-                data: error
-            }
-        })
+            .then(res => res.data)
+            .catch((error) => {
+                return {
+                    type: "fail",
+                    data: error && error.response && error.response.data ? error.response.data : ""
+                }
+            })
     };
 
     static delete(url, params, type = "initHost") {
