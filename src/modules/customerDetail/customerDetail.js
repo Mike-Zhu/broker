@@ -8,8 +8,9 @@ import {
     Cancel,
     Completed
 } from './tpls'
+import { connect } from 'react-redux';
 
-export default class CustomerDetail extends Component {
+class CustomerDetail extends Component {
     constructor(props) {
         super();
         // const { search } = props.history.location;
@@ -71,3 +72,4 @@ export default class CustomerDetail extends Component {
         )
     }
 }
+export default connect()(CustomerDetail)
