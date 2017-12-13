@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import {
   HashRouter,
   Route,
@@ -10,9 +10,8 @@ import Login from '../modules/login/login'
 import createHistory from 'history/createHashHistory'
 import { checkPathname, checkToken } from './routerData'
 import asyncComponent from '../components/AsyncComponent'
-import { Provider, connect } from 'react-redux';
+import { Provider } from 'react-redux';
 import store from '../store/store'
-
 const routerObject = [
   {
     path: "/",
@@ -58,7 +57,7 @@ const routerObject = [
 const RouterIndex = () => {
   return (
     <Provider store={store}>
-      <HashRouter >
+      <HashRouter>
         <Switch>
           {routerObject.map(result => (
             <Route exact key={result.path} path={result.path} component={result.component} />
@@ -69,8 +68,7 @@ const RouterIndex = () => {
     </Provider>
   )
 }
-
-export default RouterIndex
+export default RouterIndex;
 export const history = createHistory();
 
 history.listen(location => {

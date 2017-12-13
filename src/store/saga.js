@@ -1,4 +1,5 @@
-import { call, put ,takeEvery} from 'redux-saga/effects'
+import { call, put } from 'redux-saga/effects'
+import { takeEvery } from 'redux-saga'
 import { history } from '../router'
 import Alert from '../services/alert';
 import Http from '../services/http'
@@ -13,7 +14,6 @@ function* watchLogin() {
 
 function* login({ payload }) {
     try {
-        console.log(payload)
         const openId = localStorage.getItem('openId');
         const params = {
             ...payload,
@@ -24,6 +24,8 @@ function* login({ payload }) {
         if (reponse && reponse.token) {
             localStorage.setItem('token', reponse.token)
             localStorage.setItem('tokenTime', new Date().getTime())
+            localStorage.setItem('globalData', JSON.stringify(reponse))
+            
             yield put({
                 type: "global_data",
                 payload: reponse

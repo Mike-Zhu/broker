@@ -9,6 +9,7 @@ import {
     _gotoManagement,
     _cancelLogin
 } from './menu.controller'
+import { connect } from 'react-redux'
 const menus = [
     {
         className: 'icon-folder_eople colorBlue',
@@ -26,34 +27,14 @@ const menus = [
     //     key:"lianxiren",
     // }
 ]
-export default class Menu extends Component {
+class Menu extends Component {
     constructor() {
         super();
         this.state = {}
     }
 
     componentDidMount() {
-        const global = JSON.parse(localStorage.getItem('globalData'));
-        const { 
-                newTotal,
-                sumTotal,
-                conversion,
-                unConversion,
-                saleName,//市场联系人
-                mobilePhone,//市场联系人手机号
-                brokerId,//联系人id
-                brokerName,//经纪人名称
-             } = global;
-        this.setState({
-            sumTotal:parseInt(sumTotal,10).toFixed(2),
-            newTotal:parseInt(newTotal,10).toFixed(2),
-            conversion,
-            unConversion,
-            saleName,
-            mobilePhone,
-            brokerId,
-            brokerName
-        })
+
     }
 
     _menuPushState(type) {
@@ -87,7 +68,7 @@ export default class Menu extends Component {
             <div className="menu ">
                 <div className="weui-cell padding015 title">
                     {_initIdentity({ type: 'new' })}
-                    <p>{this.state.brokerName}</p>
+                    <p>{this.props.brokerName}</p>
                     {/* <p className="smallp"> / 新晋经纪人</p> */}
                     <p
                         className="quit"
@@ -101,11 +82,11 @@ export default class Menu extends Component {
                     <div className="weui-cell__bd">
                         <p className="fz14">本月提成（元）</p>
                         <p className="number">
-                        {this.state.newTotal > 0 ? '+' : ''}
-                        {this.state.newTotal}</p>
+                            {this.props.newTotal > 0 ? '+' : ''}
+                            {this.props.newTotal}</p>
                         <p className="fz14 explain">
                             历史累计提成&nbsp;
-                            <span className="greenColor">{this.state.sumTotal}</span>
+                            <span className="greenColor">{this.props.sumTotal}</span>
                             &nbsp;元
                         </p>
                     </div>
@@ -118,14 +99,14 @@ export default class Menu extends Component {
                         <div className="weui-cell__bd">
                             <span >总转化 / 推荐</span>
                         </div>
-                        <div className="weui-cell__ft">{this.state.unConversion} / {this.state.conversion}</div>
+                        <div className="weui-cell__ft">{this.props.unConversion} / {this.state.conversion}</div>
                     </a>
-                    <a  href={`tel:${this.state.mobilePhone}`} className="weui-cell  weui-cell_access">
+                    <a href={`tel:${this.props.mobilePhone}`} className="weui-cell  weui-cell_access">
                         <div className="weui-cell__bd">
                             <span>市场联系人</span>
                         </div>
                         <div className="weui-cell__ft graycolor">
-                            {this.state.saleName} | {this.state.mobilePhone}
+                            {this.props.saleName} | {this.props.mobilePhone}
                         </div>
                     </a>
                 </div>
@@ -137,3 +118,7 @@ export default class Menu extends Component {
         )
     }
 }
+const mapStateToProps = (state) => {
+    return state.globalData
+}
+export default connect(mapStateToProps)(Menu);

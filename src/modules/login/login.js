@@ -4,11 +4,10 @@ import jinjiren from '../../static/images/jingjiren/jinjiren.png'
 import {
     Link
 } from 'react-router-dom'
-import { bindInfo } from './login.controller'
 import Alert from '../../services/alert'
-import { action } from '../../store/store'
+import { connect } from 'react-redux'
 
-export default class Login extends Component {
+class Login extends Component {
     constructor() {
         super();
         this.state = {
@@ -25,7 +24,8 @@ export default class Login extends Component {
 
     async _login() {
         const { name, pwd } = this.state;
-        const { history } = this.props;
+        // console.log(this.props)
+        const { dispatch } = this.props;
         if (!name) {
             Alert.alert('请输入账号');
             return;
@@ -33,31 +33,13 @@ export default class Login extends Component {
             Alert.alert('请输入密码');
             return;
         };
-        action({
-            type:"Broker_login",
-            payload:{
+        dispatch({
+            type: "Broker_login",
+            payload: {
                 name,
                 pwd
             }
         })
-        // const reponse = await bindInfo({ name, pwd });
-        // if (reponse.type && reponse.type === 'wechat/access') {
-        //     if(reponse.data.response && reponse.data.response.data){
-        //         Alert.alert(reponse.data.response.data);
-        //     }else{
-        //         Alert.alert("登录错误，请重试");
-        //     }
-        //     return;
-        // }
-        // // const { data } = reponse;
-        // // console.log(data)
-        // if (reponse && reponse.token) {
-        //     localStorage.setItem('globalData', JSON.stringify(reponse))
-        //     localStorage.setItem('token', reponse.token)
-        //     localStorage.setItem('tokenTime', new Date().getTime())
-        // }
-        // //存储
-        // history.replace('menu')
     }
 
     render() {
@@ -120,3 +102,8 @@ export default class Login extends Component {
         )
     }
 }
+
+const mapStateToProps = (state) => {
+    return state
+}
+export default connect(mapStateToProps)(Login)

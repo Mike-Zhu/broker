@@ -13,5 +13,5 @@ for (var key in saga) {
     sagaMiddleware.run(saga[key])
 }
 
-export const action = ({ type, payload }) => store.dispatch({ type, payload });
+// export const action = ({ type, payload }) => store.dispatch({ type, payload });
 export default store
