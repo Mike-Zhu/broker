@@ -3,6 +3,8 @@ import './list.scss'
 import Footer from '../../layout/footer'
 import { customerType } from './customerData'
 import { connect } from 'react-redux'
+import JRfunction from '../../services/JRfunction'
+
 class CustomerList extends Component {
     state = {}
     componentDidMount() {
@@ -42,7 +44,7 @@ class CustomerList extends Component {
         sessionStorage.setItem(key, JSONdata)
         history.push({
             pathname: `/customerDetail/${id}`,
-            // search: JRfunction.setQuery({ type }),
+            search: JRfunction.setQuery({ type }),
         })
         //    to={"?type="}
     }

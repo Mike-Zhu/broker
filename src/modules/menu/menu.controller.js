@@ -41,8 +41,7 @@ export function _gotoCusList() {
 }
 
 export function _gotoManagement() {
-    const { history } = this.props;
-    const { brokerId } = this.state;
+    const { history ,brokerId} = this.props;
     const search = JRfunction.setQuery({ brokerId })
     history.push({
         pathname: "/management",
