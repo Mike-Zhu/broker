@@ -110,6 +110,6 @@ class Menu extends Component {
     }
 }
 const mapStateToProps = (state) => {
-    return state.globalData
+    return state.globalData || {}
 }
 export default connect(mapStateToProps)(Menu);

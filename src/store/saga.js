@@ -8,7 +8,8 @@ import JRfunction from '../services/JRfunction'
 const history = createHistory();
 export default {
     watchLogin,
-    customerlist
+    customerlist,
+    routerChange
 }
 
 function* watchLogin() {
@@ -19,6 +20,16 @@ function* customerlist() {
     yield* takeEvery('load_customerList', getCustomerList)
 
 }
+
+function* routerChange() {
+    console.log(2)
+    yield* takeEvery('@@router/LOCATION_CHANGE',  function* ({ payload: { pathname } }){
+        yield put({ type: `routerLoad${pathname}` })
+    })
+
+}
+
+
 
 function* getCustomerList({ payload }) {
     try {
@@ -65,6 +76,7 @@ function* login({ payload }) {
             })
         } else if (reponse && reponse.type === "fail") {
             Alert.alert(reponse.data || "登录错误，请重试")
+            return;
         }
         //存储
         history.replace('menu')

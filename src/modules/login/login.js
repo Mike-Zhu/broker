@@ -6,15 +6,14 @@ import {
 } from 'react-router-dom'
 import Alert from '../../services/alert'
 import { connect } from 'react-redux'
-
+import { push } from 'react-router-redux'
 class Login extends Component {
-    constructor() {
+    constructor(props) {
         super();
         this.state = {
             name: '',
             pwd: ''
         }
-
     }
     _changeValue($event, type) {
         this.setState({
@@ -22,9 +21,13 @@ class Login extends Component {
         })
     }
 
+    componentDidMount() {
+        const { dispatch } = this.props;
+        console.log(this.props)
+        dispatch(push('/menu'))
+    }
     async _login() {
         const { name, pwd } = this.state;
-        // console.log(this.props)
         const { dispatch } = this.props;
         if (!name) {
             Alert.alert('请输入账号');
@@ -81,17 +84,11 @@ class Login extends Component {
                     </div>
                 </div>
                 <div className="weui-btn-area">
-                    {/* <Link
-                        className="weui-btn weui-btn_primary"
-                        to="/menu"
-                    > */}
                     <a
                         onClick={this._login.bind(this)}
                         className="weui-btn weui-btn_primary">
                         登录
                     </a>
-
-                    {/* </Link> */}
                 </div>
                 <p
                     className="page__desc login login" >

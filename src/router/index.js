@@ -1,6 +1,6 @@
 import React from 'react'
 import {
-  HashRouter,
+  // HashRouter,
   Route,
   Redirect,
   Switch
@@ -9,7 +9,9 @@ import Launch from '../modules/launch/launch'
 import Login from '../modules/login/login'
 import asyncComponent from '../components/AsyncComponent'
 import { Provider } from 'react-redux';
-import store from '../store/store'
+import store, { history } from '../store/store'
+import { ConnectedRouter } from 'react-router-redux'
+
 const routerObject = [
   {
     path: "/",
@@ -55,14 +57,14 @@ const routerObject = [
 const RouterIndex = () => {
   return (
     <Provider store={store}>
-      <HashRouter>
+      <ConnectedRouter history={history}>
         <Switch>
           {routerObject.map(result => (
             <Route exact key={result.path} path={result.path} component={result.component} />
           ))}
           <Redirect to="/menu" />
         </Switch>
-      </HashRouter >
+      </ConnectedRouter >
     </Provider>
   )
 }
