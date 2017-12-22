@@ -22,7 +22,6 @@ function* customerlist() {
 }
 
 function* routerChange() {
-    console.log(2)
     yield* takeEvery('@@router/LOCATION_CHANGE',  function* ({ payload: { pathname } }){
         yield put({ type: `routerLoad${pathname}` })
     })

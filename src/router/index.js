@@ -1,6 +1,6 @@
 import React from 'react'
 import {
-  // HashRouter,
+  HashRouter,
   Route,
   Redirect,
   Switch
@@ -58,12 +58,14 @@ const RouterIndex = () => {
   return (
     <Provider store={store}>
       <ConnectedRouter history={history}>
-        <Switch>
-          {routerObject.map(result => (
-            <Route exact key={result.path} path={result.path} component={result.component} />
-          ))}
-          <Redirect to="/menu" />
-        </Switch>
+        <HashRouter>
+          <Switch>
+            {routerObject.map(result => (
+              <Route exact key={result.path} path={result.path} component={result.component} />
+            ))}
+            <Redirect to="/menu" />
+          </Switch>
+        </HashRouter>
       </ConnectedRouter >
     </Provider>
   )

@@ -28,10 +28,13 @@ for (var key in saga) {
 // export const action = ({ type, payload }) => store.dispatch({ type, payload });
 export default store
 
+/************************************************************************/
+//这一步可以放在saga里
+//因为action比liston来的更快，可以直接劫持然后replace到login
 history.listen(location => {
-    console.log(1)
     const { pathname } = location;
-    // if (!checkToken() && checkPathname.indexOf(pathname) >= 0) {
-    //     history.replace('login')
-    // }
+    if (!checkToken() && checkPathname.indexOf(pathname) >= 0) {
+        history.replace('login')
+    }
 })
+/************************************************************************/
