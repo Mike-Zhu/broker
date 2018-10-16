@@ -1,106 +1,79 @@
 import React, { Component } from 'react'
-import './login.scss'
-import jinjiren from '../../static/images/jingjiren/jinjiren.png'
-import {
-    Link
-} from 'react-router-dom'
-import Alert from '../../services/alert'
 import { connect } from 'react-redux'
 import { push } from 'react-router-redux'
+import { Form, Icon, Input, Button, Checkbox } from 'antd';
+import './login.scss'
+import Http from '../../services/http';
+const FormItem = Form.Item;
+
+
 class Login extends Component {
     constructor(props) {
-        super();
-        this.state = {
-            name: '',
-            pwd: ''
-        }
+        super(props);
     }
-    _changeValue($event, type) {
-        this.setState({
-            [type]: $event.target.value
-        })
+    api = {
+        login: "api/adminLogin"
     }
 
-    componentDidMount() {
-        const { dispatch } = this.props;
-        console.log(this.props)
-        dispatch(push('/menu'))
-    }
-    async _login() {
-        const { name, pwd } = this.state;
-        const { dispatch } = this.props;
-        if (!name) {
-            Alert.alert('请输入账号');
-            return;
-        } else if (!pwd) {
-            Alert.alert('请输入密码');
-            return;
-        };
-        dispatch({
-            type: "Broker_login",
-            payload: {
-                name,
-                pwd
+    handleSubmit = (e) => {
+        e.preventDefault();
+        this.props.form.validateFields((err, values) => {
+            if (!err) {
+                // console.log('Received values of form: ', values);
+                let { account, password } = values
+                let { login } = this.api
+                let { history } = this.props;
+
+                // let res = Http.post(login, {
+                //     account,
+                //     password
+                // })
+                // let { token } = res
+                // localStorage.setItem('token', token)
+                history.push('wrongbanklist')
             }
-        })
+        });
     }
 
     render() {
+        const { getFieldDecorator } = this.props.form;
         return (
-            <div className="login">
-                <img src={jinjiren} className="width80" alt="" />
-                <h1
-                    className="page__title system">
-                    登录经纪人系统
-                </h1>
-                <p className="page__desc title" >
-                    金润二当家
-                </p>
-                <div className="weui-cells weui-cells_form mb-15" >
-                    <div className="weui-cell">
-                        <div className="weui-cell__hd">
-                            <label className="weui-label">用户名</label>
-                        </div>
-                        <div className="weui-cell__bd">
-                            <input
-                                className="weui-input" type="text"
-                                value={this.state.account}
-                                onChange={($event) => { this._changeValue($event, 'name') }}
-                                placeholder="" />
-                        </div>
-                    </div>
-                    <div className="weui-cell">
-                        <div className="weui-cell__hd">
-                            <label className="weui-label">密码</label>
-                        </div>
-                        <div className="weui-cell__bd">
-                            <input
-                                className="weui-input"
-                                type="password"
-                                value={this.state.password}
-                                onChange={($event) => { this._changeValue($event, 'pwd') }}
-                                placeholder="" />
-                        </div>
-                    </div>
-                </div>
-                <div className="weui-btn-area">
-                    <a
-                        onClick={this._login.bind(this)}
-                        className="weui-btn weui-btn_primary">
-                        登录
-                    </a>
-                </div>
-                <p
-                    className="page__desc login login" >
-                    <Link to="/register" className='wechatColor'>注册</Link>
-                    成为经纪人
-                </p>
-            </div >
-        )
+            <Form onSubmit={this.handleSubmit} className="login-form">
+                <FormItem>
+                    {getFieldDecorator('account', {
+                        rules: [{ required: true, message: 'Please input your username!' }],
+                    })(
+                        <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Username" />
+                    )}
+                </FormItem>
+                <FormItem>
+                    {getFieldDecorator('password', {
+                        rules: [{ required: true, message: 'Please input your Password!' }],
+                    })(
+                        <Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="Password" />
+                    )}
+                </FormItem>
+                <FormItem>
+                    {getFieldDecorator('remember', {
+                        valuePropName: 'checked',
+                        initialValue: true,
+                    })(
+                        <Checkbox>Remember me</Checkbox>
+                    )}
+                    {/* <a className="login-form-forgot" href="">Forgot password</a> */}
+                    <Button type="primary" htmlType="submit" className="login-form-button">
+                        Log in
+              </Button>
+                    {/* Or <a href="">register now!</a> */}
+                </FormItem>
+            </Form>
+        );
     }
 }
 
 const mapStateToProps = (state) => {
     return state
 }
-export default connect(mapStateToProps)(Login)
+let LoginForm = Form.create()(Login)
+
+export default connect(mapStateToProps)(LoginForm)

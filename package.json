@@ -63,7 +63,11 @@
   },
   "homepage": "./",
   "devDependencies": {
-    "sass-loader": "^6.0.6"
+    "babel-plugin-import": "^1.6.3",
+    "less": "^2.7.3",
+    "less-loader": "^4.0.5",
+    "sass-loader": "^6.0.6",
+    "webpack-bundle-analyzer": "^2.9.2"
   },
   "jest": {
     "collectCoverageFrom": [

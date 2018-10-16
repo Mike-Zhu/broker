@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import Http from '../../services/http'
-import JRfunction from '../../services/JRfunction'
 
 const getOpenId = (code) => {
     const url = "wechat/server/openid"
@@ -17,22 +16,22 @@ export default class Launch extends Component {
     }
 
     async componentDidMount() {
-        const search = window.location.search
-        const { code } = JRfunction.getUrlQuery(search);
-        const response = await getOpenId(code);
+        // const search = window.location.search
+        // const { code } = JRfunction.getUrlQuery(search);
+        // const response = await getOpenId(code);
         const { history } = this.props;
-        const openId = localStorage.getItem('openId')
-        if(typeof response === 'string'){
-            if(response !== openId){
-                localStorage.setItem('openId', response)
-                history.replace('login')
-            }else{
-                history.replace('menu')
-            }
+        // const openId = localStorage.getItem('openId')
+        // if(typeof response === 'string'){
+        //     if(response !== openId){
+        //         localStorage.setItem('openId', response)
+        //         history.replace('login')
+        //     }else{
+        //         history.replace('menu')
+        //     }
             
-        }else{
+        // }else{
             history.replace('login')
-        }
+        // }
     }
 
     render() {

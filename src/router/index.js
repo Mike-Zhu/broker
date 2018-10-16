@@ -21,38 +21,38 @@ const routerObject = [
     path: "/login",
     component: Login
   },
+  // {
+  //   path: "/register",
+  //   component: asyncComponent(() => import('../modules/register/register'))
+  // },
   {
-    path: "/register",
-    component: asyncComponent(() => import('../modules/register/register'))
-  },
-  {
-    path: "/menu",
+    path: "/wrongbanklist",
     component: asyncComponent(() => import('../modules/menu/menu'))
   },
   {
-    path: "/customerList",
-    component: asyncComponent(() => import('../modules/customerList/customerList'))
-  },
-  {
-    path: "/customerDetail/:userId",
+    path: "/wrongDetail/:uid",
     component: asyncComponent(() => import('../modules/customerDetail/customerDetail'))
   },
-  {
-    path: "/addCustomer",
-    component: asyncComponent(() => import('../modules/addCustomer/addCustomer'))
-  },
-  {
-    path: "/management",
-    component: asyncComponent(() => import('../modules/management/management'))
-  },
-  {
-    path: "/manageDetail",
-    component: asyncComponent(() => import('../modules/manageDetail/manageDetail'))
-  },
-  {
-    path: "/customerSearch",
-    component: asyncComponent(() => import('../modules/customerSearch/customerSearch'))
-  }
+  // {
+  //   path: "/customerList",
+  //   component: asyncComponent(() => import('../modules/customerList/customerList'))
+  // },
+  // {
+  //   path: "/addCustomer",
+  //   component: asyncComponent(() => import('../modules/addCustomer/addCustomer'))
+  // },
+  // {
+  //   path: "/management",
+  //   component: asyncComponent(() => import('../modules/management/management'))
+  // },
+  // {
+  //   path: "/manageDetail",
+  //   component: asyncComponent(() => import('../modules/manageDetail/manageDetail'))
+  // },
+  // {
+  //   path: "/customerSearch",
+  //   component: asyncComponent(() => import('../modules/customerSearch/customerSearch'))
+  // }
 ]
 const RouterIndex = () => {
   return (

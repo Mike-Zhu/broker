@@ -1,110 +1,78 @@
 import React, { Component } from 'react'
 import './menu.scss'
-// import { Link } from 'react-router-dom'
-import Footer from '../../layout/footer'
-import {
-    _initIdentity,
-    _renderMenu,
-    _gotoCusList,
-    _gotoManagement,
-    _cancelLogin
-} from './menu.controller'
 import { connect } from 'react-redux'
-const menus = [
-    {
-        className: 'icon-folder_eople colorBlue',
-        title: '客户管理',
-        key: "customerList",
-    },
-    {
-        className: 'icon-Performance colorGreen',
-        title: '业绩管理',
-        key: "management",
-    },
-    // {
-    //     className: 'icon-contact-copy colorGreen',
-    //     title: '专属联系人',
-    //     key:"lianxiren",
-    // }
-]
+import { Table, Divider, Tag } from 'antd';
+
+
+
+
+const data = [{
+    key: '1',
+    name: 'John Brown',
+    age: 32,
+    address: 'New York No. 1 Lake Park',
+    tags: ['nice', 'developer'],
+}, {
+    key: '2',
+    name: 'Jim Green',
+    age: 42,
+    address: 'London No. 1 Lake Park',
+    tags: ['loser'],
+}, {
+    key: '3',
+    name: 'Joe Black',
+    age: 32,
+    address: 'Sidney No. 1 Lake Park',
+    tags: ['cool', 'teacher'],
+}];
+
+
 class Menu extends Component {
-    _menuPushState(type) {
-        switch (type) {
-            case "customerList":
-                _gotoCusList.bind(this)();
-                break;
-            case "management":
-                _gotoManagement.bind(this)();
-                break;
-            default:
-                return;
-        }
+
+    checkQuestion = uid => {
+        let {history} = this.props
+        history.push(`wrongDetail/${uid}`)
     }
 
-    _footStyle = {
-        textAlign: "center",
-        padding: "25px 15px 15px"
-    }
-
-    async _cancelLogin() {
-        const { history } = this.props;
-        await _cancelLogin();
-        localStorage.setItem("token", '');
-        localStorage.setItem("tokenTime", '');
-        history.push('login')
-    }
+    columns = [{
+        title: 'Name',
+        dataIndex: 'name',
+        key: 'name',
+        render: text => <a href="javascript:;">{text}</a>,
+    }, {
+        title: 'Age',
+        dataIndex: 'age',
+        key: 'age',
+    }, {
+        title: 'Address',
+        dataIndex: 'address',
+        key: 'address',
+    }, {
+        title: 'Tags',
+        key: 'tags',
+        dataIndex: 'tags',
+        render: tags => (
+            <span>
+                {tags.map(tag => <Tag color="blue" key={tag}>{tag}</Tag>)}
+            </span>
+        ),
+    }, {
+        title: '操作',
+        key: 'action',
+        render: (text, record) => (
+            <span>
+                <a onClick={() => this.checkQuestion(record.address)}>修改 </a>
+                <Divider type="vertical" />
+                <a href="javascript:;">标记完成</a>
+            </span>
+        ),
+    }];
 
     render() {
         return (
-            <div className="menu ">
-                <div className="weui-cell padding015 title">
-                    {_initIdentity({ type: 'new' })}
-                    <p>{this.props.brokerName}</p>
-                    {/* <p className="smallp"> / 新晋经纪人</p> */}
-                    <p
-                        className="quit"
-                        onClick={this._cancelLogin.bind(this)}
-                    >
-                        <i className="iconfont icon-logOut" ></i>
-                        <span>退出</span>
-                    </p>
-                </div>
-                <div className="details">
-                    <div className="weui-cell__bd">
-                        <p className="fz14">本月提成（元）</p>
-                        <p className="number">
-                            {this.props.newTotal > 0 ? '+' : ''}
-                            {this.props.newTotal}</p>
-                        <p className="fz14 explain">
-                            历史累计提成&nbsp;
-                            <span className="greenColor">{this.props.sumTotal}</span>
-                            &nbsp;元
-                        </p>
-                    </div>
-
-                </div>
-                <div className="weui-cells">
-                    <a className="weui-cell weui-cell_access"
-                        onClick={_gotoCusList.bind(this)}
-                    >
-                        <div className="weui-cell__bd">
-                            <span >总转化 / 推荐</span>
-                        </div>
-                        <div className="weui-cell__ft">{this.props.unConversion} / {this.props.conversion}</div>
-                    </a>
-                    <a href={`tel:${this.props.mobilePhone}`} className="weui-cell  weui-cell_access">
-                        <div className="weui-cell__bd">
-                            <span>市场联系人</span>
-                        </div>
-                        <div className="weui-cell__ft graycolor">
-                            {this.props.saleName} | {this.props.mobilePhone}
-                        </div>
-                    </a>
-                </div>
-                <div className="weui-grids mt25">
-                    {_renderMenu.bind(this)(menus)}
-                </div>
-                <Footer config={{ style: this._footStyle }} />
+            <div className="wrong-list">
+                <h3>错题列表</h3>
+                <Table columns={this.columns} dataSource={data} />
             </div>
         )
     }
