@@ -12,6 +12,27 @@ const ModuleScopePlugin = require('react-dev-utils/ModuleScopePlugin');
 const getClientEnvironment = require('./env');
 const paths = require('./paths');
 
+/****************************************************/
+//定义theme
+const fs = require('fs');
+const { existsSync } = fs;
+const pkgPath = paths.appPackageJson
+const pkg = existsSync(pkgPath) ? require(pkgPath) : {};
+let theme = {};
+if (pkg.theme && typeof (pkg.theme) === 'string') {
+  let cfgPath = pkg.theme;
+  // relative path
+  if (cfgPath.charAt(0) === '.') {
+    cfgPath = paths.resolveApp(cfgPath);
+  }
+  const getThemeConfig = require(cfgPath);
+  theme = getThemeConfig();
+} else if (pkg.theme && typeof (pkg.theme) === 'object') {
+  theme = pkg.theme;
+}
+/****************************************************/
+
+
 // Webpack uses `publicPath` to determine where the app is being served from.
 // In development, we always serve from the root. This makes config easier.
 const publicPath = '/';
@@ -144,11 +165,17 @@ module.exports = {
             include: paths.appSrc,
             loader: require.resolve('babel-loader'),
             options: {
-              
+
               // This is a feature of `babel-loader` for webpack (not Babel itself).
               // It enables caching results in ./node_modules/.cache/babel-loader/
               // directory for faster rebuilds.
               cacheDirectory: true,
+              plugins: [
+                ["import", {
+                  libraryName: "antd",
+                  style: true
+                }]
+              ]
             },
           },
           // "postcss" loader applies autoprefixer to our CSS.
@@ -192,6 +219,23 @@ module.exports = {
             test: /\.scss$/,
             loaders: ["style-loader", "css-loader", "sass-loader"],
           },
+          {
+            test: /\.less$/,
+            use: [
+              { loader: "style-loader" },
+              {
+                loader: "css-loader",
+                options:{
+                  sourcemap: true
+                }
+              }, {
+                loader: "less-loader",
+                options:{
+                  sourcemap: true,
+                  modifyVars:theme
+                }
+              }],
+          },
           // "file" loader makes sure those assets get served by WebpackDevServer.
           // When you `import` an asset, you get its (virtual) filename.
           // In production, they would get copied to the `build` folder.
@@ -202,7 +246,7 @@ module.exports = {
             // it's runtime that would otherwise processed through "file" loader.
             // Also exclude `html` and `json` extensions so they get processed
             // by webpacks internal loaders.
-            exclude: [/\.js$/, /\.html$/, /\.json$/, /.scss$/],
+            exclude: [/\.js$/, /\.html$/, /\.json$/, /.scss$/, /.less$/],
             loader: require.resolve('file-loader'),
             options: {
               name: 'static/media/[name].[hash:8].[ext]',

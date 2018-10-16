@@ -12,6 +12,30 @@ const eslintFormatter = require('react-dev-utils/eslintFormatter');
 const ModuleScopePlugin = require('react-dev-utils/ModuleScopePlugin');
 const paths = require('./paths');
 const getClientEnvironment = require('./env');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+
+
+/****************************************************/
+//定义theme
+const fs = require('fs');
+const { existsSync } = fs;
+const pkgPath = paths.appPackageJson
+const pkg = existsSync(pkgPath) ? require(pkgPath) : {};
+let theme = {};
+if (pkg.theme && typeof (pkg.theme) === 'string') {
+  let cfgPath = pkg.theme;
+  // relative path
+  if (cfgPath.charAt(0) === '.') {
+    cfgPath = paths.resolveApp(cfgPath);
+  }
+  const getThemeConfig = require(cfgPath);
+  theme = getThemeConfig();
+} else if (pkg.theme && typeof (pkg.theme) === 'object') {
+  theme = pkg.theme;
+}
+/****************************************************/
+
+
 
 // Webpack uses `publicPath` to determine where the app is being served from.
 // It requires a trailing slash, or the file assets will get an incorrect path.
@@ -43,7 +67,7 @@ const cssFilename = 'static/css/[name].[contenthash:8].css';
 // To have this structure working with relative paths, we have to use custom options.
 const extractTextPluginOptions = shouldUseRelativeAssetPaths
   ? // Making sure that the publicPath goes back to to build folder.
-    { publicPath: Array(cssFilename.split('/').length).join('../') }
+  { publicPath: Array(cssFilename.split('/').length).join('../') }
   : {};
 
 // This is the production configuration.
@@ -56,7 +80,16 @@ module.exports = {
   // You can exclude the *.map files from the build during deployment.
   devtool: shouldUseSourceMap ? 'source-map' : false,
   // In production, we only want to load the polyfills and the app code.
-  entry: [require.resolve('./polyfills'), paths.appIndexJs],
+  entry: {
+    app: [require.resolve('./polyfills'), paths.appIndexJs],
+    vendor: [
+      'rc-select', 'rc-menu', 'rc-time-picker', 'rc-form', 'rc-dialog', 'rc-input-number', 'rc-trigger',
+      'react-router-dom',
+      'redux', 'redux-saga', 'react-redux', 'lodash'
+    ],
+    react: ['react', 'react-dom',
+      'moment', 'axios']
+  },
   output: {
     // The build folder.
     path: paths.appBuild,
@@ -90,7 +123,7 @@ module.exports = {
     // for React Native Web.
     extensions: ['.web.js', '.mjs', '.js', '.json', '.web.jsx', '.jsx'],
     alias: {
-      
+
       // Support React Native Web
       // https://www.smashingmagazine.com/2016/08/a-glimpse-into-the-future-with-react-native-for-web/
       'react-native': 'react-native-web',
@@ -121,7 +154,7 @@ module.exports = {
             options: {
               formatter: eslintFormatter,
               eslintPath: require.resolve('eslint'),
-              
+
             },
             loader: require.resolve('eslint-loader'),
           },
@@ -149,13 +182,36 @@ module.exports = {
             include: paths.appSrc,
             loader: require.resolve('babel-loader'),
             options: {
-              
+
               compact: true,
+              plugins: [
+                ["import", {
+                  libraryName: "antd",
+                  style: true
+                }]
+              ]
             },
           },
           {
             test: /\.scss$/,
             loaders: ["style-loader", "css-loader", "sass-loader"],
+          },
+          {
+            test: /\.less$/,
+            use: [
+              { loader: "style-loader" },
+              {
+                loader: "css-loader",
+                options: {
+                  sourcemap: true
+                }
+              }, {
+                loader: "less-loader",
+                options: {
+                  sourcemap: true,
+                  modifyVars: theme
+                }
+              }],
           },
           // The notation here is somewhat confusing.
           // "postcss" loader applies autoprefixer to our CSS.
@@ -238,6 +294,20 @@ module.exports = {
     ],
   },
   plugins: [
+    new BundleAnalyzerPlugin(),//生成图片
+    new webpack.optimize.CommonsChunkPlugin({
+      name: ["vendor", "react"],
+      minChunks: 2
+    }),
+    new webpack.optimize.CommonsChunkPlugin({
+      async: 'used-twice',
+      minChunks: (module, count) => {
+        // console.log(module.resource)
+        return (
+          count >= 2
+        )
+      },
+    }),
     // Makes some environment variables available in index.html.
     // The public URL is available as %PUBLIC_URL% in index.html, e.g.:
     // <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
@@ -278,7 +348,7 @@ module.exports = {
       },
       mangle: {
         safari10: true,
-      },        
+      },
       output: {
         comments: false,
         // Turned on because emoji and regex is not minified properly using default
